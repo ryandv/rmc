@@ -36,27 +36,37 @@ function(RmcBackbone, $, _, _s) {
     },
 
     render: function() {
-      this.$el.html(this.template({
-        terms: this.collection.groupedByTerm(),
-        sectionIsFull: function(section) {
-          var total = section.get('enrollment_total');
-          var cap = section.get('enrollment_capacity');
-          return total >= cap;
-        },
-        sectionMissingValueText: function(section, courseId) {
-          if (_s.startsWith(courseId, 'wkrpt')) {
-            return 'N/A';
-          }
-          // ONLN ONLINE
-          // ONLNG ONLINE
-          // ONLNP ONLINE
-          // ONLNJ ONLINE
-          // ONLNR ONLINE
-          var onlinePattern = /ONLN.? ONLINE/;
-          return onlinePattern.test(section.get('campus')) ? 'N/A' : 'TBA';
-        },
-        shouldLinkifyProfs: this.shouldLinkifyProfs
-      }));
+      var terms = this.collection.groupedByTerm();
+      _.each(_.keys(terms), _.bind(function(termId) {
+        this.$el.append(this.template({
+          term: terms[termId],
+
+          termId: termId,
+
+          sectionIsFull: function(section) {
+            var total = section.get('enrollment_total');
+            var cap = section.get('enrollment_capacity');
+            return total >= cap;
+          },
+
+          sectionMissingValueText: function(section, courseId) {
+            if (_s.startsWith(courseId, 'wkrpt')) {
+              return 'N/A';
+            }
+            // ONLN ONLINE
+            // ONLNG ONLINE
+            // ONLNP ONLINE
+            // ONLNJ ONLINE
+            // ONLNR ONLINE
+            var onlinePattern = /ONLN.? ONLINE/;
+            return onlinePattern.test(section.get('campus')) ? 'N/A' : 'TBA';
+          },
+
+          shouldLinkifyProfs: this.shouldLinkifyProfs
+
+        }));
+      }, this));
+
       return this;
     }
   });
