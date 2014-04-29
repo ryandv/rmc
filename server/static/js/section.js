@@ -31,17 +31,41 @@ function(RmcBackbone, $, _, _s) {
     className: 'sections-collection',
 
     initialize: function(options) {
-      this.template = _.template($('#sections-collection-tpl').html());
+      this.sectionCollectionTemplate = _.template($('#sections-collection-tpl').html());
       this.shouldLinkifyProfs = options.shouldLinkifyProfs;
     },
 
     render: function() {
       var terms = this.collection.groupedByTerm();
-      _.each(_.keys(terms), _.bind(function(termId) {
-        this.$el.append(this.template({
-          term: terms[termId],
 
+      _.each(_.keys(terms), _.bind(function(termId) {
+        this.$el.append(this.sectionCollectionTemplate({
+          term: terms[termId],
           termId: termId,
+        }));
+
+        this.$('.sections-table-body-placeholder').replaceWith(
+          new TermView({ model: terms[termId] }).render().el);
+
+      }, this));
+
+      return this;
+    }
+  });
+
+  var TermView = RmcBackbone.View.extend({
+    className: 'term-table',
+
+    tagName: 'tbody',
+
+    initialize: function(options) {
+      this.sectionRowTemplate = _.template($('#section-row-tpl').html());
+    },
+
+    render: function() {
+      _.each(this.model, _.bind(function(section) {
+        this.$el.append(this.sectionRowTemplate({
+          section: section,
 
           sectionIsFull: function(section) {
             var total = section.get('enrollment_total');
