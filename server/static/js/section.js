@@ -39,24 +39,27 @@ function(RmcBackbone, $, _, _s, util) {
       var terms = this.collection.groupedByTerm();
 
       _.each(_.keys(terms).sort(), _.bind(function(termId) {
-        this.$el.append(this.sectionCollectionTemplate({
-          term: terms[termId],
-          termId: termId,
-        }));
-
-        _.each(terms[termId], _.bind(function(section) {
-          this.$('.sections-table-body-placeholder').append(
-            new TermView({
-              model: section,
-              shouldLinkifyProfs: this.shouldLinkifyProfs
-            }).render().el);
-        }, this));
-
+        this._addTermTable(terms, termId);
+        _.each(terms[termId], _.bind(this._addSectionRow, this));
         this.$('.sections-table-body-placeholder').removeClass('sections-table-body-placeholder');
-
       }, this));
 
       return this;
+    },
+
+    _addTermTable: function(terms, termId) {
+      this.$el.append(this.sectionCollectionTemplate({
+        term: terms[termId],
+        termId: termId,
+      }));
+    },
+
+    _addSectionRow: function(section) {
+      this.$('.sections-table-body-placeholder').append(
+        new TermView({
+        model: section,
+        shouldLinkifyProfs: this.shouldLinkifyProfs
+      }).render().el);
     }
   });
 
@@ -68,6 +71,14 @@ function(RmcBackbone, $, _, _s, util) {
     initialize: function(options) {
       this.sectionRowTemplate = _.template($('#section-row-tpl').html());
       this.shouldLinkifyProfs = options.shouldLinkifyProfs;
+    },
+
+    events: {
+      'click .add-course-alert-btn': 'onAlertAdd'
+    },
+
+    onAlertAdd: function() {
+      console.log(this.model);
     },
 
     render: function() {
