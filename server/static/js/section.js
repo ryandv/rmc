@@ -52,7 +52,10 @@ function(RmcBackbone, $, _, _s, util) {
     _addTermTable: function(terms, termId) {
       this.$el.append(this.template({
         term: terms[termId],
-        termId: termId,
+        termName: util.humanizeTermId(termId),
+        lastUpdated: moment(terms[termId][0].get('last_updated')).fromNow(),
+        courseParts: util.splitCourseId(terms[termId][0].get('course_id')),
+        questId: util.termIdToQuestId(termId),
       }));
     },
 
