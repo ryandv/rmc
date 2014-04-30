@@ -84,7 +84,7 @@ function(RmcBackbone, $, _, _s, util) {
 
     onAlertAdd: function() {
       $.ajax({
-        url: '/api/v1/alerts/course/email/',
+        url: '/api/v1/alerts/course/email',
         type: 'POST',
         data: {
           course_id: this.model.get('course_id'),
