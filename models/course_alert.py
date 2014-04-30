@@ -176,7 +176,6 @@ class GcmCourseAlert(BaseCourseAlert):
 class EmailCourseAlert(BaseCourseAlert):
     """Course alert using email notifications."""
 
-    # Optional user ID associated with this alert.
     user_id = me.ObjectIdField(
         unique_with=BaseCourseAlert.BASE_UNIQUE_FIELDS)
 
