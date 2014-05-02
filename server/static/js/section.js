@@ -80,14 +80,14 @@ function(RmcBackbone, $, _, _s, _alert, util) {
 
     _addSectionRow: function(section) {
       this.$('.sections-table-body-placeholder').append(
-        new TermView({
+        new SectionView({
         model: section,
         shouldLinkifyProfs: this.shouldLinkifyProfs
       }).render().el);
     }
   });
 
-  var TermView = RmcBackbone.View.extend({
+  var SectionView = RmcBackbone.View.extend({
     className: 'term-table',
 
     tagName: 'tr',
