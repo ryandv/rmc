@@ -19,9 +19,9 @@
   <span class="enrollment-capacity">
     <%- section.get('enrollment_capacity') %>
   </span>
-  <% if (sectionIsFull && !alerts) { %>
+  <% if (sectionIsFull && !hasAlert) { %>
     <span class="add-course-alert-btn icon-bell"></span>
-  <% } else if (sectionIsFull && alerts) { %>
+  <% } else if (sectionIsFull && hasAlert) { %>
     <span class="add-course-alert-btn icon-remove"></span>
   <% } %>
 </td>

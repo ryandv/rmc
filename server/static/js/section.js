@@ -67,7 +67,7 @@ function(RmcBackbone, $, _, _s, alert, util) {
       this.$('.sections-table-body-placeholder').append(
         new TermView({
         model: section,
-        alerts: this.collection.alerts.some(function(alert) {
+        hasAlert: this.collection.alerts.some(function(alert) {
           return alert.get('term_id') === section.get('term_id') &&
             alert.get('section_type') === section.get('section_type') &&
               alert.get('section_num') === section.get('section_num') &&
@@ -86,7 +86,7 @@ function(RmcBackbone, $, _, _s, alert, util) {
     initialize: function(options) {
       this.template = _.template($('#section-row-tpl').html());
       this.shouldLinkifyProfs = options.shouldLinkifyProfs;
-      this.alerts = options.alerts;
+      this.hasAlert = options.hasAlert;
     },
 
     events: {
@@ -140,7 +140,7 @@ function(RmcBackbone, $, _, _s, alert, util) {
 
         sectionIsFull: this._sectionIsFull(this.model),
 
-        alerts: this.alerts,
+        hasAlert: this.hasAlert,
 
         sectionMissingValueText: function(section, courseId) {
           if (_s.startsWith(courseId, 'wkrpt')) {
