@@ -670,7 +670,7 @@ def add_email_course_alert():
     except me.NotUniqueError as e:
         raise api_util.ApiBadRequestError(
                 'Alert with the given parameters already exists.')
-    return api_util.jsonify({})
+    return api_util.jsonify(alert.to_dict())
 
 ###############################################################################
 # Misc.
