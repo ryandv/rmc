@@ -265,3 +265,36 @@ class V1Test(testlib.FlaskTestCase):
                 '/api/v1/alerts/course/email', data=data, headers=headers)
         self.assertResponseOk(resp)
         self.assertEqual(m.EmailCourseAlert.objects.count(), 2)
+
+    def test_delete_email_course_alert(self):
+        created_timestamp = 1396710772
+        expiry_timestamp = 1496710772
+
+        alert = m.EmailCourseAlert(
+            user_id='533e4f7d78d6fe562c16f17a',
+            course_id='sci238',
+            created_date=datetime.datetime.fromtimestamp(created_timestamp),
+            expiry_date=datetime.datetime.fromtimestamp(expiry_timestamp),
+        )
+        alert.save()
+        self.assertEqual(m.EmailCourseAlert.objects.count(), 1)
+
+        headers = self.get_csrf_token_header()
+
+        resp = self.app.delete(
+                '/api/v1/alerts/course/gcm/%s' % alert.id, headers=headers)
+        self.assertResponseOk(resp)
+        self.assertJsonResponse(resp, {
+            'email_course_alert': {
+                'user_id': '533e4f7d78d6fe562c16f17a',
+                'term_id': '',
+                'section_type': '',
+                'expiry_date': 1496696372000,
+                'created_date': 1396696372000,
+                'course_id': 'sci238',
+                'section_num': '',
+                'id': str(alert.id),
+            }
+        })
+        self.assertEqual(m.EmailCourseAlert.objects.count(), 0)
+

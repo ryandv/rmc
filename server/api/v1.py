@@ -672,6 +672,14 @@ def add_email_course_alert():
                 'Alert with the given parameters already exists.')
     return api_util.jsonify(alert.to_dict())
 
+@api.route('/alerts/course/email/<string:alert_id>', methods=['DELETE'])
+def delete_gcm_course_alert(alert_id):
+    alert = m.EmailCourseAlert.objects.get(id=alert_id)
+    alert.delete()
+    return api_util.jsonify({
+        'email_course_alert': alert.to_dict()
+    });
+
 ###############################################################################
 # Misc.
 
