@@ -96,11 +96,9 @@ function(RmcBackbone, $, _, _s, _alert, util) {
     initialize: function(options) {
       this.template = _.template($('#section-row-tpl').html());
       this.shouldLinkifyProfs = options.shouldLinkifyProfs;
-      this.model.on("change:alert", this.render, this);
     },
 
     render: function() {
-      this.$el.empty();
       this.$el.addClass('section-' +
         util.sectionTypeToCssClass(this.model.get('section_type')));
 
@@ -130,6 +128,12 @@ function(RmcBackbone, $, _, _s, _alert, util) {
 
       }));
 
+      this._renderAlertIcon();
+
+      return this;
+    },
+
+    _renderAlertIcon: function() {
       if (this._sectionIsFull(this.model)) {
         var alert = this.model.get('alert');
 
@@ -148,8 +152,6 @@ function(RmcBackbone, $, _, _s, _alert, util) {
 
         alertView.setElement(this.$('.alert-placeholder')).render();
       }
-
-      return this;
     },
 
     _sectionIsFull: function(section) {

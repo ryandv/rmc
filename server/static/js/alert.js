@@ -80,7 +80,8 @@ function(RmcBackbone, $, _, _s, toastr) {
     },
 
     onAlertAddSuccess: function() {
-      toastr.success(_s.sprintf("You will be emailed when %s %s %s has open seats.",
+      toastr.success(_s.sprintf("You will be emailed when %s %s %s " +
+                                "has open seats.",
                                 this.model.get('course_id').toUpperCase(),
                                 this.model.get('section_type'),
                                 this.model.get('section_num')));
